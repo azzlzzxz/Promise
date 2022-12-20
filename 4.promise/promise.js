@@ -142,7 +142,7 @@ function resolvePromise(x, promise2, resolve, reject) {
 
     /**
      * 2.3.3.3
-     * 如果 then 是函数，将 x 作为函数的作用域 this 调用之。
+     * 如果 then 是函数，将 x 作为函数的作用域 this 调用。
      * 传递两个回调函数作为参数，
      * 第一个参数叫做 `resolvePromise` ，第二个参数叫做 `rejectPromise`
      */
