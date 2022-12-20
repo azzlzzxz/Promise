@@ -6,7 +6,7 @@ const STATUS = {
 
 class Promise {
   constructor(executor) {
-    this.status = "PENDING";
+    this.status = STATUS.PENDING;
     this.value = undefined;
     this.reason = undefined;
     this.onResolveCallbacks = [];
