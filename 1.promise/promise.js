@@ -2,8 +2,8 @@
  * @Author: xinxu
  * @Date: 2022-12-17 17:58:15
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 17:09:49
- * @FilePath: /promise/promise/promise.js
+ * @LastEditTime: 2022-12-20 17:34:33
+ * @FilePath: /Promise/1.promise/promise.js
  */
 const STATUS = {
   PENDING: "PENDING",
@@ -40,4 +40,5 @@ class Promise {
     }
   }
 }
+
 module.exports = Promise;

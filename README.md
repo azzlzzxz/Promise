@@ -2,7 +2,7 @@
  * @Author: xinxu
  * @Date: 2022-12-20 17:22:04
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 17:32:01
+ * @LastEditTime: 2022-12-20 17:44:10
  * @FilePath: /Promise/README.md
 -->
 
@@ -10,8 +10,9 @@
 
 ## 什么是 Promise？我们用 Promise 来解决什么问题？
 
-Promise 是异步编程的一种解决方案： 从语法上讲，promise 是一个对象，从它可以获取异步操作的消息；从本意上讲，它是承诺，承诺它过一段时间会给你一个结果。 promise 有三种状态：pending(等待态)，fulfilled(成功态)，rejected(失败态)；状态一旦改变，就不会再变。创造 promise 实例后，它会立即执行。
-缺陷：依旧是基于回调函数的，进化--> generator + co / async + await。
+1. Promise 是异步编程的一种解决方案： 从语法上讲，promise 是一个对象，从它可以获取异步操作的消息；从本意上讲，它是承诺，承诺它过一段时间会给你一个结果。
+2. Promise 有三种状态：pending(等待态)，fulfilled(成功态)，rejected(失败态)；状态一旦改变，就不会再变。创造 promise 实例后，它会立即执行。
+3. 缺陷：依旧是基于回调函数的，进化--> generator + co / async + await。
 
 ## 为什么有 Promise 这个东西
 
