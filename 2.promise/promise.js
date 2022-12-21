@@ -2,8 +2,8 @@
  * @Author: xinxu
  * @Date: 2022-12-17 17:58:15
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 17:13:20
- * @FilePath: /promise/1.promise/promise.js
+ * @LastEditTime: 2022-12-20 21:14:19
+ * @FilePath: /Promise/2.promise/promise.js
  */
 const STATUS = {
   PENDING: "PENDING",
@@ -52,9 +52,7 @@ class Promise {
 
     if (this.status == STATUS.FULFILLED) {
       // 如果promise，resolve，就走then的onFulfilled函数
-      // setTimeout(() => {
       onFulfilled(this.value);
-      // }, 0);
     }
     if (this.status == STATUS.REJECTED) {
       // 如果promise，reject，就走then的onRejected函数

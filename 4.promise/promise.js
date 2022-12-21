@@ -4,6 +4,21 @@ const STATUS = {
   REJECTED: "REJECTED",
 };
 
+function nextTick(callback) {
+  if (
+    typeof process !== "undefined" &&
+    typeof process.nextTick === "function"
+  ) {
+    process.nextTick(callback);
+  } else {
+    const observer = new MutationObserver(callback);
+    const textNode = document.createTextNode("1");
+    observer.observe(textNode, {
+      characterData: true,
+    });
+    textNode.data = "2";
+  }
+}
 class Promise {
   constructor(executor) {
     this.status = STATUS.PENDING;
@@ -32,7 +47,7 @@ class Promise {
   }
 
   then(onFulfilled, onRejected) {
-    // 2.2.7规范 then 方法必须返回一个 promise 对象
+    // 2.2.7规范 then 方法必须返回一个新的 promise 对象
     let promise2 = new Promise((resolve, reject) => {
       if (this.status === STATUS.FULFILLED) {
         /**
@@ -42,7 +57,7 @@ class Promise {
          * 实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
          * 这个事件队列可以采用“宏任务（macro-task）”机制，比如setTimeout 或者 setImmediate； 也可以采用“微任务（micro-task）”机制来实现， 比如 MutationObserver 或者process.nextTick。
          */
-        setTimeout(() => {
+        nextTick(() => {
           try {
             if (typeof onFulfilled !== "function") {
               // 2.2.7.3规范 如果 onFulfilled 不是函数且 promise1 成功执行， promise2 必须成功执行并返回相同的值
@@ -59,7 +74,7 @@ class Promise {
         });
       }
       if (this.status === STATUS.REJECTED) {
-        setTimeout(() => {
+        nextTick(() => {
           try {
             if (typeof onRejected !== "function") {
               // 2.2.7.4规范 如果 onRejected 不是函数且 promise1 拒绝执行， promise2 必须拒绝执行并返回相同的拒绝原因
@@ -76,7 +91,7 @@ class Promise {
       if (this.status === STATUS.PENDING) {
         // pending 状态保存的 onFulfilled() 和 onRejected() 回调也要符合 2.2.7.1，2.2.7.2，2.2.7.3 和 2.2.7.4 规范
         this.onResolveCallbacks.push(() => {
-          setTimeout(() => {
+          nextTick(() => {
             try {
               if (typeof onFulfilled !== "function") {
                 resolve(this.value);
@@ -90,7 +105,7 @@ class Promise {
           });
         });
         this.onRejectCallbacks.push(() => {
-          setTimeout(() => {
+          nextTick(() => {
             try {
               if (typeof onRejected !== "function") {
                 reject(this.reason);
@@ -119,18 +134,11 @@ class Promise {
 function resolvePromise(x, promise2, resolve, reject) {
   // 2.3.1规范 如果 promise 和 x 指向同一对象，以 TypeError 为据因拒绝执行 promise
   if (x === promise2) {
-    throw new TypeError("Chaining cycle detected for promise");
+    // 如果promise2 === x，会导致循环引用，自己等自己执行完成
+    throw new TypeError("出错了");
   }
 
-  if (x instanceof Promise) {
-    /**
-     * 2.3.2 如果 x 为 Promise ，则使 promise2 接受 x 的状态
-     *       也就是继续执行x，如果执行的时候拿到一个y，还要继续解析y
-     */
-    x.then((y) => {
-      resolvePromise(y, promise2, resolve, reject);
-    }, reject);
-  } else if (x !== null && (typeof x === "object" || typeof x === "function")) {
+  if (x !== null && (typeof x === "object" || typeof x === "function")) {
     // 2.3.3 如果 x 为对象或函数
     try {
       // 2.3.3.1 把 x.then 赋值给 then
@@ -150,12 +158,14 @@ function resolvePromise(x, promise2, resolve, reject) {
       // 2.3.3.3.3 如果 resolvePromise 和 rejectPromise 均被调用，或者被同一参数调用了多次，则优先采用首次调用并忽略剩下的调用
       let called = false; // 避免多次调用
       try {
+        // 防止取多次
         then.call(
           x,
           // 2.3.3.3.1 如果 resolvePromise 以值 y 为参数被调用，则运行 [[Resolve]](promise, y)
           (y) => {
             if (called) return;
             called = true;
+            // 递归解析成功后的值，知道他是一个普通值为止
             resolvePromise(y, promise2, resolve, reject);
           },
           // 2.3.3.3.2 如果 rejectPromise 以据因 r 为参数被调用，则以据因 r 拒绝 promise

@@ -2,10 +2,11 @@
  * @Author: xinxu
  * @Date: 2022-12-17 19:49:42
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-17 21:03:43
- * @FilePath: /promise/2.promise/test.js
+ * @LastEditTime: 2022-12-20 21:17:01
+ * @FilePath: /Promise/3.promise/test.js
  */
 const Promise = require("./promise.js");
+
 console.log(1);
 let p = new Promise((resolve, reject) => {
   console.log(2);

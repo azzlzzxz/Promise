@@ -2,7 +2,7 @@
  * @Author: xinxu
  * @Date: 2022-12-17 19:49:49
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 17:56:33
+ * @LastEditTime: 2022-12-20 18:04:36
  * @FilePath: /Promise/3.promise/promise.js
  */
 const STATUS = {
@@ -44,10 +44,14 @@ class Promise {
             throw reason;
           };
     if (this.status === STATUS.FULFILLED) {
-      onFulfilled(this.value);
+      setTimeout(() => {
+        onFulfilled(this.value);
+      }, 0);
     }
     if (this.status === STATUS.REJECTED) {
-      onRejected(this.reason);
+      setTimeout(() => {
+        onRejected(this.reason);
+      }, 0);
     }
     if (this.status === STATUS.PENDING) {
       // promise的状态处于pending，需要等promise的状态确定下来，再走then的onFulfilled/onRejected方法，

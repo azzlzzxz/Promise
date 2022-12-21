@@ -2,45 +2,51 @@
  * @Author: xinxu
  * @Date: 2022-12-17 19:49:42
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 16:15:48
- * @FilePath: /promise/4.promise/test.js
+ * @LastEditTime: 2022-12-20 23:31:06
+ * @FilePath: /Promise/4.promise/test.js
  */
 const Promise = require("./promise.js");
-console.log(1);
-let p = new Promise((resolve, reject) => {
-  console.log(2);
+setTimeout(() => {
+  console.log("宏任务3");
+}, 0);
+
+let p1 = new Promise((resolve, reject) => {
+  console.log("宏任务1");
   setTimeout(() => {
-    console.log(4);
-    resolve("success");
-    console.log(5);
-  }, 1000);
+    console.log("宏任务4");
+    resolve(1);
+    // reject(1);
+  }, 0);
 });
-p.then(
+
+p1.then(
   (data) => {
-    console.log(data);
+    console.log("微任务1", data);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(2);
+        // reject(3);
+      }, 1000);
+    });
+  },
+  (err) => {
+    return err;
+  }
+).then(
+  (data) => {
+    console.log("微任务2", data);
   },
   (err) => {
     console.log(err);
   }
 );
-console.log(3);
 
-setTimeout(function () {
-  console.log("宏事件3");
-}, 0);
+console.log("宏任务2");
 
-new Promise((resolve) => {
-  console.log("宏事件1");
-  setTimeout(() => {
-    console.log("宏事件4");
-    resolve(1);
-  }, 0);
-})
-  .then(function (data) {
-    console.log("微事件1", data);
-  })
-  .then(function () {
-    console.log("微事件2");
-  });
+let p2 = new Promise((resolve, reject) => {
+  resolve("ok");
+});
 
-console.log("宏事件2");
+p2.then((data) => {
+  console.log(data);
+});
