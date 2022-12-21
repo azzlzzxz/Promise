@@ -19,6 +19,7 @@ function nextTick(callback) {
     textNode.data = "2";
   }
 }
+
 class Promise {
   constructor(executor) {
     this.status = STATUS.PENDING;
@@ -57,7 +58,7 @@ class Promise {
          * 实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
          * 这个事件队列可以采用“宏任务（macro-task）”机制，比如setTimeout 或者 setImmediate； 也可以采用“微任务（micro-task）”机制来实现， 比如 MutationObserver 或者process.nextTick。
          */
-        nextTick(() => {
+        setTimeout(() => {
           try {
             if (typeof onFulfilled !== "function") {
               // 2.2.7.3规范 如果 onFulfilled 不是函数且 promise1 成功执行， promise2 必须成功执行并返回相同的值
@@ -74,7 +75,7 @@ class Promise {
         });
       }
       if (this.status === STATUS.REJECTED) {
-        nextTick(() => {
+        setTimeout(() => {
           try {
             if (typeof onRejected !== "function") {
               // 2.2.7.4规范 如果 onRejected 不是函数且 promise1 拒绝执行， promise2 必须拒绝执行并返回相同的拒绝原因
@@ -91,7 +92,7 @@ class Promise {
       if (this.status === STATUS.PENDING) {
         // pending 状态保存的 onFulfilled() 和 onRejected() 回调也要符合 2.2.7.1，2.2.7.2，2.2.7.3 和 2.2.7.4 规范
         this.onResolveCallbacks.push(() => {
-          nextTick(() => {
+          setTimeout(() => {
             try {
               if (typeof onFulfilled !== "function") {
                 resolve(this.value);
@@ -105,7 +106,7 @@ class Promise {
           });
         });
         this.onRejectCallbacks.push(() => {
-          nextTick(() => {
+          setTimeout(() => {
             try {
               if (typeof onRejected !== "function") {
                 reject(this.reason);
@@ -205,4 +206,4 @@ Promise.deferred = function () {
   return result;
 };
 
-module.exports = Promise;
+// module.exports = Promise;

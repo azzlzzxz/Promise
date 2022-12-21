@@ -1,0 +1,65 @@
+<!--
+ * @Author: xinxu
+ * @Date: 2022-12-21 14:15:03
+ * @LastEditors: xinxu
+ * @LastEditTime: 2022-12-21 14:38:00
+ * @FilePath: /Promise/4.promise/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./promise.js"></script>
+    <script>
+      setTimeout(() => {
+        console.log("宏任务3");
+      }, 0);
+
+      let p1 = new Promise((resolve, reject) => {
+        console.log("宏任务1");
+        setTimeout(() => {
+          console.log("宏任务4");
+          resolve(1);
+          // reject(1);
+        }, 0);
+      });
+
+      p1.then(
+        (data) => {
+          console.log("微任务1", data);
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(2);
+              // reject(3);
+            }, 1000);
+          });
+        },
+        (err) => {
+          return err;
+        }
+      ).then(
+        (data) => {
+          console.log("微任务2", data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
+      console.log("宏任务2");
+
+      let p2 = new Promise((resolve, reject) => {
+        resolve("ok");
+      });
+
+      p2.then((data) => {
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
