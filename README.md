@@ -2,7 +2,7 @@
  * @Author: xinxu
  * @Date: 2022-12-20 17:22:04
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-22 15:04:12
+ * @LastEditTime: 2022-12-22 15:05:28
  * @FilePath: /Promise/README.md
 -->
 
@@ -68,7 +68,7 @@
 2. 如果返回的是一个 Promise，则会用这个 Promise 的成功/失败，走外层下一个 then 的成功/失败。
 3. 返回的 Promise 出错（失败）就失败 ---> 其他一律会走下一个 then 的成功里。
 4. catch 就是 then 的别名 没有成功只有失败 （找最近的优先处理，处理不了找下一层）（也就是说，当 promise 失败了，会先找 then 的 onReject 方法去返回失败的值，如果找不到就会走 catch）。
-
+   ![image](./assest/promise.png)
    [then 方法的链式调用](4.promise/promise.js)
 
 ### 5.promise 的其他方法
