@@ -2,7 +2,7 @@
  * @Author: xinxu
  * @Date: 2022-12-20 17:22:04
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-22 14:52:59
+ * @LastEditTime: 2022-12-22 15:04:12
  * @FilePath: /Promise/README.md
 -->
 
@@ -46,7 +46,31 @@
 
 ## 实现 Promise
 
-### 1. 实现 resolve 和 reject
+### 1.实现 resolve 和 reject
 
 1. Promise 是一个类，类中的构造函数需要传入一个 executor ，默认就会执行，executor 中有两个参数 分别是 resolve，reject。
 2. 调用成功和失败时 需要传递一个成功的原因和失败的原因，如果已经成功了就不能失败了，如果抛出异常按照失败来处理。
+   [resolve&reject](./1.resolve%26reject/promise.js)
+
+### 2.then 方法的实现
+
+[then](./2.then/promise.js)
+
+### 3.then 方法的异步实现
+
+[then 的异步](3.thenAsync/promise.js)
+
+### 4.then 方法的链式调用
+
+因为每次调用 then 方法，会产生新的 Promise，才能保证状态一直改变（当上层 promsie 失败时，之后走起 then 方法的 onReject，返回新的 Promise 会走其 then 方法的 onFulfilled）。
+
+1. 如果 then 方法中（成功或失败），返回的不是一个 Promise，那么会将值（then 的返回值）传递给外层下一次 then 的成功的结果，如果 then 方法出错，抛出异常，则会走外层下一个 then 方法的失败。
+2. 如果返回的是一个 Promise，则会用这个 Promise 的成功/失败，走外层下一个 then 的成功/失败。
+3. 返回的 Promise 出错（失败）就失败 ---> 其他一律会走下一个 then 的成功里。
+4. catch 就是 then 的别名 没有成功只有失败 （找最近的优先处理，处理不了找下一层）（也就是说，当 promise 失败了，会先找 then 的 onReject 方法去返回失败的值，如果找不到就会走 catch）。
+
+   [then 方法的链式调用](4.promise/promise.js)
+
+### 5.promise 的其他方法
+
+[promise 的其他方法](5.promiseMethod/promise.js)
