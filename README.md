@@ -2,7 +2,7 @@
  * @Author: xinxu
  * @Date: 2022-12-20 17:22:04
  * @LastEditors: xinxu
- * @LastEditTime: 2022-12-20 17:44:10
+ * @LastEditTime: 2022-12-22 14:52:59
  * @FilePath: /Promise/README.md
 -->
 
@@ -29,3 +29,24 @@
 
 1. Promise 对象的状态不受外界影响，1）pending 初始状态、2）fulfilled 成功状态、3）rejected 失败状态，Promise 有以上三种状态，只有异步操作的结果可以决定当前是哪一种状态，其他任何操作都无法改变这个状态。
 2. Promise 的状态一旦改变，就不会再变，任何时候都可以得到这个结果，状态不可以逆，只能由 pending 变成 fulfilled 或者由 pending 变成 rejected。
+
+## 手写 Promise 包含以下知识点 👇：
+
+1. Promise
+2. Class 类
+3. 改变 this 指向 (call、apply 和 bind)
+4. 事件循环 Event Loop
+
+### 先来介绍两个前置知识：
+
+1. 浏览器的 EvenLoop
+   ![image](./assest/Browser-EvenLoop.png)
+2. Node 的 EvenLoop
+   ![image](./assest/Node-EvenLoop.png)
+
+## 实现 Promise
+
+### 1. 实现 resolve 和 reject
+
+1. Promise 是一个类，类中的构造函数需要传入一个 executor ，默认就会执行，executor 中有两个参数 分别是 resolve，reject。
+2. 调用成功和失败时 需要传递一个成功的原因和失败的原因，如果已经成功了就不能失败了，如果抛出异常按照失败来处理。
